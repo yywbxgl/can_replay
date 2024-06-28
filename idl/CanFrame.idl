@@ -1,0 +1,19 @@
+struct CanFrame 
+{
+    // nanosecond timestamp
+    uint64 timestamp;
+    // CAN message id (11/29 bit)
+    uint32 id;
+    // CAN data size in bytes
+    uint8 dlc;
+    // CAN data
+    uint8 data[8];
+    // error flag bit (0 = data frame, 1 = error message)
+    uint8 err;
+    // remote transmission request flag (1 = rtr frame)
+    uint8 rtr;
+    // frame format flag (0 = standard 11 bit, 1 = extended 29 bit)
+    uint8 eff;
+};
+
+
