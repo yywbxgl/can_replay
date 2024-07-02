@@ -10,7 +10,6 @@ file(GLOB_RECURSE GENERATED_SOURCE_FILES
 add_executable(can_replay  ${GENERATED_SOURCE_FILES} 
     src/main.cpp
     src/dds_helper.cpp
-    src/socket_can.cpp
 )
 
 target_include_directories(can_replay PRIVATE 

@@ -62,16 +62,10 @@ eProsima_user_DllExport size_t calculate_serialized_size(
                 data.dlc(), current_alignment);
 
         calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(3),
-                data.data(), current_alignment);
+                data.reserved(), current_alignment);
 
         calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(4),
-                data.err(), current_alignment);
-
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(5),
-                data.rtr(), current_alignment);
-
-        calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(6),
-                data.eff(), current_alignment);
+                data.data(), current_alignment);
 
 
     calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
@@ -94,10 +88,8 @@ eProsima_user_DllExport void serialize(
         << eprosima::fastcdr::MemberId(0) << data.timestamp()
         << eprosima::fastcdr::MemberId(1) << data.id()
         << eprosima::fastcdr::MemberId(2) << data.dlc()
-        << eprosima::fastcdr::MemberId(3) << data.data()
-        << eprosima::fastcdr::MemberId(4) << data.err()
-        << eprosima::fastcdr::MemberId(5) << data.rtr()
-        << eprosima::fastcdr::MemberId(6) << data.eff()
+        << eprosima::fastcdr::MemberId(3) << data.reserved()
+        << eprosima::fastcdr::MemberId(4) << data.data()
 ;
     scdr.end_serialize_type(current_state);
 }
@@ -128,19 +120,11 @@ eProsima_user_DllExport void deserialize(
                                             break;
 
                                         case 3:
-                                                dcdr >> data.data();
+                                                dcdr >> data.reserved();
                                             break;
 
                                         case 4:
-                                                dcdr >> data.err();
-                                            break;
-
-                                        case 5:
-                                                dcdr >> data.rtr();
-                                            break;
-
-                                        case 6:
-                                                dcdr >> data.eff();
+                                                dcdr >> data.data();
                                             break;
 
                     default:

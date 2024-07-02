@@ -191,6 +191,33 @@ public:
 
 
     /*!
+     * @brief This function copies the value in member reserved
+     * @param _reserved New value to be copied in member reserved
+     */
+    eProsima_user_DllExport void reserved(
+            const std::array<uint8_t, 3>& _reserved);
+
+    /*!
+     * @brief This function moves the value in member reserved
+     * @param _reserved New value to be moved in member reserved
+     */
+    eProsima_user_DllExport void reserved(
+            std::array<uint8_t, 3>&& _reserved);
+
+    /*!
+     * @brief This function returns a constant reference to member reserved
+     * @return Constant reference to member reserved
+     */
+    eProsima_user_DllExport const std::array<uint8_t, 3>& reserved() const;
+
+    /*!
+     * @brief This function returns a reference to member reserved
+     * @return Reference to member reserved
+     */
+    eProsima_user_DllExport std::array<uint8_t, 3>& reserved();
+
+
+    /*!
      * @brief This function copies the value in member data
      * @param _data New value to be copied in member data
      */
@@ -216,75 +243,13 @@ public:
      */
     eProsima_user_DllExport std::array<uint8_t, 8>& data();
 
-
-    /*!
-     * @brief This function sets a value in member err
-     * @param _err New value for member err
-     */
-    eProsima_user_DllExport void err(
-            uint8_t _err);
-
-    /*!
-     * @brief This function returns the value of member err
-     * @return Value of member err
-     */
-    eProsima_user_DllExport uint8_t err() const;
-
-    /*!
-     * @brief This function returns a reference to member err
-     * @return Reference to member err
-     */
-    eProsima_user_DllExport uint8_t& err();
-
-
-    /*!
-     * @brief This function sets a value in member rtr
-     * @param _rtr New value for member rtr
-     */
-    eProsima_user_DllExport void rtr(
-            uint8_t _rtr);
-
-    /*!
-     * @brief This function returns the value of member rtr
-     * @return Value of member rtr
-     */
-    eProsima_user_DllExport uint8_t rtr() const;
-
-    /*!
-     * @brief This function returns a reference to member rtr
-     * @return Reference to member rtr
-     */
-    eProsima_user_DllExport uint8_t& rtr();
-
-
-    /*!
-     * @brief This function sets a value in member eff
-     * @param _eff New value for member eff
-     */
-    eProsima_user_DllExport void eff(
-            uint8_t _eff);
-
-    /*!
-     * @brief This function returns the value of member eff
-     * @return Value of member eff
-     */
-    eProsima_user_DllExport uint8_t eff() const;
-
-    /*!
-     * @brief This function returns a reference to member eff
-     * @return Reference to member eff
-     */
-    eProsima_user_DllExport uint8_t& eff();
-
 private:
 
     uint64_t m_timestamp{0};
     uint32_t m_id{0};
     uint8_t m_dlc{0};
+    std::array<uint8_t, 3> m_reserved{0};
     std::array<uint8_t, 8> m_data{0};
-    uint8_t m_err{0};
-    uint8_t m_rtr{0};
-    uint8_t m_eff{0};
 
 };
 

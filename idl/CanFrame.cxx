@@ -53,10 +53,8 @@ CanFrame::CanFrame(
     m_timestamp = x.m_timestamp;
     m_id = x.m_id;
     m_dlc = x.m_dlc;
+    m_reserved = x.m_reserved;
     m_data = x.m_data;
-    m_err = x.m_err;
-    m_rtr = x.m_rtr;
-    m_eff = x.m_eff;
 }
 
 CanFrame::CanFrame(
@@ -65,10 +63,8 @@ CanFrame::CanFrame(
     m_timestamp = x.m_timestamp;
     m_id = x.m_id;
     m_dlc = x.m_dlc;
+    m_reserved = std::move(x.m_reserved);
     m_data = std::move(x.m_data);
-    m_err = x.m_err;
-    m_rtr = x.m_rtr;
-    m_eff = x.m_eff;
 }
 
 CanFrame& CanFrame::operator =(
@@ -78,10 +74,8 @@ CanFrame& CanFrame::operator =(
     m_timestamp = x.m_timestamp;
     m_id = x.m_id;
     m_dlc = x.m_dlc;
+    m_reserved = x.m_reserved;
     m_data = x.m_data;
-    m_err = x.m_err;
-    m_rtr = x.m_rtr;
-    m_eff = x.m_eff;
     return *this;
 }
 
@@ -92,10 +86,8 @@ CanFrame& CanFrame::operator =(
     m_timestamp = x.m_timestamp;
     m_id = x.m_id;
     m_dlc = x.m_dlc;
+    m_reserved = std::move(x.m_reserved);
     m_data = std::move(x.m_data);
-    m_err = x.m_err;
-    m_rtr = x.m_rtr;
-    m_eff = x.m_eff;
     return *this;
 }
 
@@ -105,10 +97,8 @@ bool CanFrame::operator ==(
     return (m_timestamp == x.m_timestamp &&
            m_id == x.m_id &&
            m_dlc == x.m_dlc &&
-           m_data == x.m_data &&
-           m_err == x.m_err &&
-           m_rtr == x.m_rtr &&
-           m_eff == x.m_eff);
+           m_reserved == x.m_reserved &&
+           m_data == x.m_data);
 }
 
 bool CanFrame::operator !=(
@@ -205,6 +195,45 @@ uint8_t& CanFrame::dlc()
 
 
 /*!
+ * @brief This function copies the value in member reserved
+ * @param _reserved New value to be copied in member reserved
+ */
+void CanFrame::reserved(
+        const std::array<uint8_t, 3>& _reserved)
+{
+    m_reserved = _reserved;
+}
+
+/*!
+ * @brief This function moves the value in member reserved
+ * @param _reserved New value to be moved in member reserved
+ */
+void CanFrame::reserved(
+        std::array<uint8_t, 3>&& _reserved)
+{
+    m_reserved = std::move(_reserved);
+}
+
+/*!
+ * @brief This function returns a constant reference to member reserved
+ * @return Constant reference to member reserved
+ */
+const std::array<uint8_t, 3>& CanFrame::reserved() const
+{
+    return m_reserved;
+}
+
+/*!
+ * @brief This function returns a reference to member reserved
+ * @return Reference to member reserved
+ */
+std::array<uint8_t, 3>& CanFrame::reserved()
+{
+    return m_reserved;
+}
+
+
+/*!
  * @brief This function copies the value in member data
  * @param _data New value to be copied in member data
  */
@@ -240,93 +269,6 @@ const std::array<uint8_t, 8>& CanFrame::data() const
 std::array<uint8_t, 8>& CanFrame::data()
 {
     return m_data;
-}
-
-
-/*!
- * @brief This function sets a value in member err
- * @param _err New value for member err
- */
-void CanFrame::err(
-        uint8_t _err)
-{
-    m_err = _err;
-}
-
-/*!
- * @brief This function returns the value of member err
- * @return Value of member err
- */
-uint8_t CanFrame::err() const
-{
-    return m_err;
-}
-
-/*!
- * @brief This function returns a reference to member err
- * @return Reference to member err
- */
-uint8_t& CanFrame::err()
-{
-    return m_err;
-}
-
-
-/*!
- * @brief This function sets a value in member rtr
- * @param _rtr New value for member rtr
- */
-void CanFrame::rtr(
-        uint8_t _rtr)
-{
-    m_rtr = _rtr;
-}
-
-/*!
- * @brief This function returns the value of member rtr
- * @return Value of member rtr
- */
-uint8_t CanFrame::rtr() const
-{
-    return m_rtr;
-}
-
-/*!
- * @brief This function returns a reference to member rtr
- * @return Reference to member rtr
- */
-uint8_t& CanFrame::rtr()
-{
-    return m_rtr;
-}
-
-
-/*!
- * @brief This function sets a value in member eff
- * @param _eff New value for member eff
- */
-void CanFrame::eff(
-        uint8_t _eff)
-{
-    m_eff = _eff;
-}
-
-/*!
- * @brief This function returns the value of member eff
- * @return Value of member eff
- */
-uint8_t CanFrame::eff() const
-{
-    return m_eff;
-}
-
-/*!
- * @brief This function returns a reference to member eff
- * @return Reference to member eff
- */
-uint8_t& CanFrame::eff()
-{
-    return m_eff;
 }
 
 
