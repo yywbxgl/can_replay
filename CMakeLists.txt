@@ -20,3 +20,8 @@ target_link_libraries(can_replay fastrtps fastcdr)
 
 install(TARGETS can_replay DESTINATION bin)
 
+
+# --------test---------------
+add_executable(can_replay_test  src/test.cpp)
+install(TARGETS can_replay_test DESTINATION bin)
+
