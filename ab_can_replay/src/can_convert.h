@@ -3,116 +3,47 @@
 #include <stdint.h>
 #include <unistd.h>
 
-// static inline uint8_t pack_left_shift_u8(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value << shift) & mask);
-// }
-
-// static inline uint8_t pack_left_shift_u16(
-//     uint16_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value << shift) & mask);
-// }
-
-// static inline uint8_t pack_left_shift_u32(
-//     uint32_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value << shift) & mask);
-// }
-
-// static inline uint8_t pack_right_shift_u8(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value >> shift) & mask);
-// }
-
-// static inline uint8_t pack_right_shift_u16(
-//     uint16_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value >> shift) & mask);
-// }
-
-// static inline uint8_t pack_right_shift_u32(
-//     uint32_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value >> shift) & mask);
-// }
-
-// static inline uint8_t unpack_left_shift_u8(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value & mask) << shift);
-// }
-
-// static inline uint16_t unpack_left_shift_u16(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint16_t)((uint16_t)(value & mask) << shift);
-// }
-
-// static inline uint32_t unpack_left_shift_u32(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint32_t)((uint32_t)(value & mask) << shift);
-// }
-
-// static inline uint8_t unpack_right_shift_u8(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint8_t)((uint8_t)(value & mask) >> shift);
-// }
-
-// static inline uint16_t unpack_right_shift_u16(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint16_t)((uint16_t)(value & mask) >> shift);
-// }
-
-// static inline uint32_t unpack_right_shift_u32(
-//     uint8_t value,
-//     uint8_t shift,
-//     uint8_t mask)
-// {
-//     return (uint32_t)((uint32_t)(value & mask) >> shift);
-// }
-
-
-struct message_1_0x6b_t {
+struct esp_0x109_t {
     double longitudinal_acceleration;
-    double speed;
+    double lateral_acceleration;
     double yaw_rate;
 };
 
 
-// todo.
-bool message_1_0x6b_pack(uint8_t *dst_p, const struct message_1_0x6b_t *src_p)
+struct esp_0x104_t {
+    double speed;
+};
+
+
+
+bool esp_0x109_pack(uint8_t *dst_p, const struct esp_0x109_t *src_p)
 {
-    dst_p[0] = (uint8_t)(src_p->longitudinal_acceleration / 0.001);
-    dst_p[1] = (uint8_t)(src_p->speed / 0.01);
-    dst_p[2] = (uint8_t)(src_p->yaw_rate / 0.01);
+    uint16_t lat_acc_uint16 = (src_p->longitudinal_acceleration - (-26.752)) / 0.001 ;
+
+    dst_p[0] |= (lat_acc_uint16 >> 8) & 0xff;
+    dst_p[1] |= lat_acc_uint16 & 0xff;
+
+    uint16_t long_acc_uint16 = (src_p->lateral_acceleration - (-26.752)) / 0.001 ;
+    dst_p[2] |= (long_acc_uint16 >> 8) & 0xff;
+    dst_p[3] |= long_acc_uint16 & 0xff;
+
+    uint16_t yaw_rate_uint16 = (src_p->yaw_rate - (-128)) / 0.0625 ;
+    dst_p[4] |= (yaw_rate_uint16 >> 4) & 0xff;
+    dst_p[5] |= (yaw_rate_uint16 << 4) & 0xf0;
+    
+    //PS: 0x0f表示以上数据都有效，0x00表示数据无效
+    dst_p[5] |= 0x0f;
+
+    return true;
+}
+
+
+bool esp_0x104_pack(uint8_t *dst_p, const struct esp_0x104_t *src_p)
+{
+    uint16_t speed_uint16 = (src_p->speed - 0) / 0.05625 ;
+    dst_p[4] |= (speed_uint16 >> 8) & 0x1f;
+    dst_p[5] |= speed_uint16 & 0xff;
+
     return true;
 }
 

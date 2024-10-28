@@ -1,22 +1,26 @@
+# Description
+This package is used to replay can messages from AutoBrain's rosbag file. 
+The can interface can be specified as an argument to the node. If no can interface is specified, the node will default to can0.
 
 
-
-# build
+# Build
 ```bash
 source /opt/ros/galactic/setup.bash
 colcon build
 ```
 
-
 # Run
 ```bash
 # source environment
-source /opt/ros/galactic/setup.bash
 source ./install/setup.bash
+sudo ip link set can0 up type can bitrate 500000 loopback off
 
-# rosbag replay
+# run rosbag replay
 ros2 bag play ./test/AB_rosbag_2024_10_09_16_28_36_1627/
 
-# can rewrite, default use can0
+# run can replay, use can0
 ros2 run ab_can_replay ab_can_replay
+
+# run can replay, use can2
+ros2 run ab_can_replay ab_can_replay  can2
 ```

@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <rclcpp/rclcpp.hpp>
 #include <ab_udp_msg/msg/ab_signals_v1.hpp>
+#include <cmath>
 
 #include "socket_can.h"
 #include "can_convert.h"
@@ -34,20 +35,39 @@ private:
     printf("\tspeed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);
 
 
-    // rewrite the can frame
-    struct message_1_0x6b_t temp;
-    temp.longitudinal_acceleration = msg->vehicle_signals.longitudinal_acceleration;
-    temp.speed = msg->vehicle_signals.longitudinal_velocity;
-    temp.yaw_rate = msg->vehicle_signals.yaw_rate;
+    // rewrite the can frame  esp_0x109
+    {
+      struct esp_0x109_t esp_109;
+      // PS 方向相反，msg中左正右负，单位rad/sec,  CAN中右正左负，单位deg/sec
+      esp_109.longitudinal_acceleration =  - msg->vehicle_signals.longitudinal_acceleration * 180.0 / M_PI; 
+      esp_109.lateral_acceleration = 0; // todo. n
+      esp_109.yaw_rate = msg->vehicle_signals.yaw_rate;
 
-    struct can_frame frame_to_write;
-    frame_to_write.can_id = 0x6b;
-    frame_to_write.can_dlc = 8;
-    frame_to_write.data[0] = 0x00;
-    message_1_0x6b_pack(frame_to_write.data, &temp);
+      struct can_frame data1;
+      memset(&data1, 0, sizeof(data1));
+      data1.can_id = 0x109;
+      data1.can_dlc = 8;
+      esp_0x109_pack(data1.data, &esp_109);
+      can_.writeFrame(data1);
+      dump_can_frame(data1);
+    }
 
-    can_.writeFrame(frame_to_write);
-    dump_can_frame(frame_to_write);
+
+    // rewrite the can frame esp_0x104
+    {
+      struct esp_0x104_t esp_104;
+      // ps. msg中单位为 m/s, CAN中单位为 km/h
+      esp_104.speed = msg->vehicle_signals.longitudinal_velocity * 3.6; 
+
+      struct can_frame data1;
+      memset(&data1, 0, sizeof(data1));
+      data1.can_id = 0x104;
+      data1.can_dlc = 8;
+      esp_0x104_pack(data1.data, &esp_104);
+      can_.writeFrame(data1);
+      dump_can_frame(data1);
+    }
+
   }
 
 
