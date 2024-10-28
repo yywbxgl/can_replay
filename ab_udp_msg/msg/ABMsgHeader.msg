@@ -1,0 +1,4 @@
+float32 interface_struct_version
+uint64 frame_number
+string s_frame_name
+string s_module_version

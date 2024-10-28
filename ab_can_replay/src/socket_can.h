@@ -11,7 +11,11 @@
 class SocketCan {
 public:
 
-    SocketCan() {}
+    SocketCan() {
+        socket_fd = -1;
+        memset(&ifr, 0, sizeof(ifr));
+        memset(&addr, 0, sizeof(addr));
+    }
 
     ~SocketCan() {
         if (socket_fd > 0) close(socket_fd);
@@ -28,7 +32,6 @@ public:
 
         if (ioctl(socket_fd, SIOCGIFINDEX, &ifr) < 0) {
             perror("Failed to get CAN interface index. Error in ioctl");
-            close(socket_fd);
             return false;
         }
 
@@ -37,7 +40,6 @@ public:
 
         if (bind(socket_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
             perror("Failed to bind CAN socket. Error in socket bind");
-            close(socket_fd);
             return false;
         }
 
@@ -60,7 +62,7 @@ public:
             perror("Error in reading from CAN socket");
             return false;
         }
-        if (nbytes < sizeof(struct can_frame)) {
+        if ((unsigned long)nbytes < sizeof(struct can_frame)) {
             std::cerr << "Incomplete CAN frame read" << std::endl;
             return false;
         }
@@ -68,7 +70,7 @@ public:
     }
 
 private:
-    int socket_fd = -1;
+    int socket_fd;
     struct ifreq ifr;
     struct sockaddr_can addr;
 };

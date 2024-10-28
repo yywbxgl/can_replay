@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include <cstring>
 
-#include "log.h"
 #include "socket_can.h"
 
 
