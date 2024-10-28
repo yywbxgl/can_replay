@@ -3,6 +3,7 @@
 #include <ab_udp_msg/msg/ab_signals_v1.hpp>
 
 #include "socket_can.h"
+#include "can_convert.h"
 
 
 class ABCanReplay: public rclcpp::Node
@@ -25,24 +26,40 @@ private:
 
   void can_frame_callback(const ab_udp_msg::msg::ABSignalsV1::SharedPtr msg)
   {
-    printf("-----------vehicle_data_recv------------\n");
-    printf("time stamp: %d %d\n", msg->header.stamp.sec, msg->header.stamp.nanosec);
-    printf("longitudinal_velocity: %f\n", msg->vehicle_signals.longitudinal_velocity);
-    printf("longitudinal_acceleration: %f\n", msg->vehicle_signals.longitudinal_acceleration);
-    printf("yaw_rate: %f\n", msg->vehicle_signals.yaw_rate);
-    printf("speed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);
+    printf("recv vehicle_data\n");
+    printf("\ttime stamp: %d %d\n", msg->header.stamp.sec, msg->header.stamp.nanosec);
+    printf("\tlongitudinal_velocity: %f\n", msg->vehicle_signals.longitudinal_velocity);
+    printf("\tlongitudinal_acceleration: %f\n", msg->vehicle_signals.longitudinal_acceleration);
+    printf("\tyaw_rate: %f\n", msg->vehicle_signals.yaw_rate);
+    printf("\tspeed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);
 
 
-    // 车速
-    // longitudinal_velocity
-    
+    // rewrite the can frame
+    struct message_1_0x6b_t temp;
+    temp.longitudinal_acceleration = msg->vehicle_signals.longitudinal_acceleration;
+    temp.speed = msg->vehicle_signals.longitudinal_velocity;
+    temp.yaw_rate = msg->vehicle_signals.yaw_rate;
 
-    // 纵向加速度
-    // longitudinal_acceleration
+    struct can_frame frame_to_write;
+    frame_to_write.can_id = 0x6b;
+    frame_to_write.can_dlc = 8;
+    frame_to_write.data[0] = 0x00;
+    message_1_0x6b_pack(frame_to_write.data, &temp);
 
-    // 转向角速度
-    // yaw_rate
+    can_.writeFrame(frame_to_write);
+    dump_can_frame(frame_to_write);
   }
+
+
+  void dump_can_frame(const can_frame& frame)
+  {
+    printf("rewrite can frame ok. [0x%x] ", frame.can_id);
+    for (int i = 0; i < frame.can_dlc; i++) {
+      printf("%02x ", frame.data[i]);
+    }
+    printf("\n");
+  }
+  
 };
 
 
