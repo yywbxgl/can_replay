@@ -5,7 +5,7 @@ The can interface can be specified as an argument to the node. If no can interfa
 
 # Build
 ```bash
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 colcon build
 ```
 
@@ -13,6 +13,8 @@ colcon build
 ```bash
 # source environment
 source ./install/setup.bash
+
+# enable can interface
 sudo ip link set can0 up type can bitrate 500000 loopback off
 
 # run rosbag replay
