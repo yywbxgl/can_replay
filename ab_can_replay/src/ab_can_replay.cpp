@@ -29,10 +29,10 @@ private:
   {
     printf("recv vehicle_data\n");
     printf("\ttime stamp: %d %d\n", msg->header.stamp.sec, msg->header.stamp.nanosec);
-    printf("\tlongitudinal_velocity: %f\n", msg->vehicle_signals.longitudinal_velocity);
-    printf("\tlongitudinal_acceleration: %f\n", msg->vehicle_signals.longitudinal_acceleration);
-    printf("\tyaw_rate: %f\n", msg->vehicle_signals.yaw_rate);
-    printf("\tspeed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);
+    printf("\tlongitudinal_velocity: %f\n", msg->vehicle_signals.longitudinal_velocity);  // 车速-speed
+    printf("\tlongitudinal_acceleration: %f\n", msg->vehicle_signals.longitudinal_acceleration);  // 纵向加速
+    printf("\tyaw_rate: %f\n", msg->vehicle_signals.yaw_rate);   
+    printf("\tspeed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);  // 没有使用
 
 
     // rewrite the can frame  esp_0x109
@@ -43,6 +43,7 @@ private:
       esp_109.lateral_acceleration = 0; // todo. n
       esp_109.yaw_rate = msg->vehicle_signals.yaw_rate;
 
+      // 创建can frame 并写到总线
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));
       data1.can_id = 0x109;
@@ -59,6 +60,7 @@ private:
       // ps. msg中单位为 m/s, CAN中单位为 km/h
       esp_104.speed = msg->vehicle_signals.longitudinal_velocity * 3.6; 
 
+      // 创建can frame 并写到总线
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));
       data1.can_id = 0x104;
