@@ -76,9 +76,9 @@ private:
     {
       struct ev6_esp_109h_t ev6_109h;
       ev6_esp_109h_init(&ev6_109h);
-      ev6_109h.longit_acce = msg->vehicle_signals.longitudinal_acceleration ;  // 单位 m/s^2
+      ev6_109h.longit_acce = ev6_esp_109h_longit_acce_encode(msg->vehicle_signals.longitudinal_acceleration)   ;  // 单位 m/s^2
       // PS 方向相反，msg中左正右负，单位rad/sec,  CAN中右正左负，单位deg/sec
-      ev6_109h.yaw_rate = - msg->vehicle_signals.yaw_rate   * 180.0 / M_PI;
+      ev6_109h.yaw_rate = ev6_esp_109h_yaw_rate_encode(- msg->vehicle_signals.yaw_rate * 180.0 / M_PI) ;
 
       // 创建can frame 并写到总线
       struct can_frame data1;
@@ -95,8 +95,8 @@ private:
       struct ev6_esp_104h_t ev6_104h;
       ev6_esp_104h_init(&ev6_104h);
       //msg中单位为 m/s, CAN中单位为 km/h
-      ev6_104h.vehicle_spd = msg->vehicle_signals.longitudinal_velocity * 3.6; 
-      ev6_104h.vehicle_spd_valid = 1; 
+      ev6_104h.vehicle_spd = ev6_esp_104h_vehicle_spd_encode(msg->vehicle_signals.longitudinal_velocity * 3.6); 
+      ev6_104h.vehicle_spd_valid = ev6_esp_104h_vehicle_spd_valid_encode(1); 
 
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));

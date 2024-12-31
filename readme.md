@@ -22,10 +22,10 @@ sudo ip link set can0 up type can bitrate 500000 loopback off
 ros2 bag play ./test/AB_rosbag_2024_10_09_16_28_36_1627/
 
 # can rewrite.  can0 is used by default
-ros2 run ab_can_replay ab_can_replay_ev6
+ros2 run ab_can_replay_ev6 ab_can_replay_ev6
 
 # can rewrite with specified can interface
-ros2 run ab_can_replay ab_can_replay_ev6  can2
+ros2 run ab_can_replay_ev6 ab_can_replay_ev6  can2
 ```
 
 
