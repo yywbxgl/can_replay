@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(ab_can_replay)
+project(ab_can_replay_233)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,22 +11,23 @@ find_package(std_msgs REQUIRED)
 find_package(ab_udp_msg REQUIRED)
 find_package(rclcpp REQUIRED)
 
-add_executable(ab_can_replay 
+add_executable(ab_can_replay_233 
   src/ab_can_replay.cpp
+  src/mcu_233.c
 )
 
-target_include_directories(ab_can_replay PUBLIC
+target_include_directories(ab_can_replay_233 PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(ab_can_replay PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(ab_can_replay_233 PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-  ab_can_replay
+  ab_can_replay_233
   std_msgs
   rclcpp
   ab_udp_msg
 )
 
-install(TARGETS ab_can_replay
+install(TARGETS ab_can_replay_233
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

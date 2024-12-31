@@ -5,6 +5,7 @@
 
 #include "socket_can.h"
 #include "can_convert.h"
+#include "ev6.h"
 
 
 class ABCanReplay: public rclcpp::Node
@@ -35,40 +36,77 @@ private:
     printf("\tspeed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);  // 没有使用
 
 
-    // rewrite the can frame  esp_0x109
+    // // rewrite the can frame  esp_0x109
+    // {
+    //   struct esp_0x109_t esp_109;
+    //   esp_109.longitudinal_acceleration = msg->vehicle_signals.longitudinal_acceleration  ;
+    //   // ps 未使用。
+    //   esp_109.lateral_acceleration = 0; 
+    //   // PS 方向相反，msg中左正右负，单位rad/sec,  CAN中右正左负，单位deg/sec
+    //   esp_109.yaw_rate = - msg->vehicle_signals.yaw_rate   * 180.0 / M_PI;
+
+    //   // 创建can frame 并写到总线
+    //   struct can_frame data1;
+    //   memset(&data1, 0, sizeof(data1));
+    //   data1.can_id = 0x109;
+    //   data1.can_dlc = 8;
+    //   esp_0x109_pack(data1.data, &esp_109);
+    //   can_.writeFrame(data1);
+    //   dump_can_frame(data1);
+    // }
+
+
+    // // rewrite the can frame esp_0x104
+    // {
+    //   struct esp_0x104_t esp_104;
+    //   // ps. msg中单位为 m/s, CAN中单位为 km/h
+    //   esp_104.speed = msg->vehicle_signals.longitudinal_velocity * 3.6; 
+
+    //   // 创建can frame 并写到总线
+    //   struct can_frame data1;
+    //   memset(&data1, 0, sizeof(data1));
+    //   data1.can_id = 0x104;
+    //   data1.can_dlc = 8;
+    //   esp_0x104_pack(data1.data, &esp_104);
+    //   can_.writeFrame(data1);
+    //   dump_can_frame(data1);
+    // }
+
+
     {
-      struct esp_0x109_t esp_109;
+      struct ev6_esp_109h_t ev6_109h;
+      ev6_esp_109h_init(&ev6_109h);
+      ev6_109h.longit_acce = msg->vehicle_signals.longitudinal_acceleration ;  // 单位 m/s^2
       // PS 方向相反，msg中左正右负，单位rad/sec,  CAN中右正左负，单位deg/sec
-      esp_109.longitudinal_acceleration =  - msg->vehicle_signals.longitudinal_acceleration * 180.0 / M_PI; 
-      esp_109.lateral_acceleration = 0; // todo. n
-      esp_109.yaw_rate = msg->vehicle_signals.yaw_rate;
+      ev6_109h.yaw_rate = - msg->vehicle_signals.yaw_rate   * 180.0 / M_PI;
 
       // 创建can frame 并写到总线
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));
       data1.can_id = 0x109;
       data1.can_dlc = 8;
-      esp_0x109_pack(data1.data, &esp_109);
+      ev6_esp_109h_pack(data1.data, &ev6_109h, 8);
       can_.writeFrame(data1);
       dump_can_frame(data1);
     }
 
 
-    // rewrite the can frame esp_0x104
     {
-      struct esp_0x104_t esp_104;
-      // ps. msg中单位为 m/s, CAN中单位为 km/h
-      esp_104.speed = msg->vehicle_signals.longitudinal_velocity * 3.6; 
+      struct ev6_esp_104h_t ev6_104h;
+      ev6_esp_104h_init(&ev6_104h);
+      //msg中单位为 m/s, CAN中单位为 km/h
+      ev6_104h.vehicle_spd = msg->vehicle_signals.longitudinal_velocity * 3.6; 
+      ev6_104h.vehicle_spd_valid = 1; 
 
-      // 创建can frame 并写到总线
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));
       data1.can_id = 0x104;
       data1.can_dlc = 8;
-      esp_0x104_pack(data1.data, &esp_104);
+      ev6_esp_104h_pack(data1.data, &ev6_104h, 8);
       can_.writeFrame(data1);
       dump_can_frame(data1);
     }
+
 
   }
 
