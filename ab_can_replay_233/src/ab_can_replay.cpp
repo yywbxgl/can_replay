@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "socket_can.h"
-#include "can_convert.h"
+#include "mcu_233.h"
 
 
 class ABCanReplay: public rclcpp::Node
@@ -35,37 +35,34 @@ private:
     printf("\tspeed_o_speed: %f\n", msg->vehicle_signals.speed_o_speed);  // 没有使用
 
 
-    // rewrite the can frame  esp_0x109
     {
-      struct esp_0x109_t esp_109;
-      esp_109.longitudinal_acceleration = msg->vehicle_signals.longitudinal_acceleration ; 
-      // ps 未使用。
-      esp_109.lateral_acceleration = 0; 
+      struct mcu_233_esc_109h_t msg_109;
+      mcu_233_esc_109h_init(&msg_109);
+      msg_109.esc_longit_acce =  mcu_233_esc_109h_esc_longit_acce_encode(msg->vehicle_signals.longitudinal_acceleration);
       // PS 方向相反，msg中左正右负，单位rad/sec,  CAN中右正左负，单位deg/sec
-      esp_109.yaw_rate = - msg->vehicle_signals.yaw_rate   * 180.0 / M_PI;
-
+      msg_109.esc_yaw_rate = mcu_233_esc_109h_esc_yaw_rate_encode(- msg->vehicle_signals.yaw_rate * 180.0 / M_PI);
       // 创建can frame 并写到总线
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));
       data1.can_id = 0x109;
       data1.can_dlc = 8;
-      esp_0x109_pack(data1.data, &esp_109);
+      mcu_233_esc_109h_pack(data1.data, &msg_109, 8);
       can_.writeFrame(data1);
       dump_can_frame(data1);
     }
 
-
-    // rewrite the can frame esp_0x104
     {
-      struct esp_0x104_t esp_104;
-      // ps. msg中单位为 m/s, CAN中单位为 km/h
-      esp_104.speed = msg->vehicle_signals.longitudinal_velocity * 3.6; 
-
+      struct mcu_233_esc_104h_t msg_104;
+      mcu_233_esc_104h_init(&msg_104);
+      //msg中单位为 m/s, CAN中单位为 km/h
+      msg_104.esc_veh_spd = mcu_233_esc_104h_esc_veh_spd_encode(msg->vehicle_signals.longitudinal_velocity*3.6);
+      msg_104.esc_veh_spd_v = mcu_233_esc_104h_esc_veh_spd_v_encode(1);
+      // 创建can frame 并写到总线
       struct can_frame data1;
       memset(&data1, 0, sizeof(data1));
       data1.can_id = 0x104;
       data1.can_dlc = 8;
-      esp_0x104_pack(data1.data, &esp_104);
+      mcu_233_esc_104h_pack(data1.data, &msg_104, 8);
       can_.writeFrame(data1);
       dump_can_frame(data1);
     }
