@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(ab_can_replay_233)
+project(proj233_msgs)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,31 +7,21 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(ab_udp_msg REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(proj233_msgs REQUIRED)
+# find_package(std_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
-
-
-add_executable(ab_can_replay_233 
-   ${GENERATED_SOURCE_FILES}
-  src/ab_can_replay.cpp
-  src/mcu_233.c
+rosidl_generate_interfaces( ${PROJECT_NAME}
+  msg/BodyGroup.msg
+  msg/ChassisGroup.msg
+  msg/EgoStatus.msg
+  msg/HMIGroup.msg
+  msg/ParamaterSettingGroup.msg
+  msg/PrivHeader.msg
+  msg/PrivTime.msg
+  msg/SwitchSettingGroup.msg
+  msg/CanFrame.msg
+  msg/CanFrameList.msg
 )
-
-
-target_compile_features(ab_can_replay_233 PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-ament_target_dependencies(
-  ab_can_replay_233
-  std_msgs
-  rclcpp
-  ab_udp_msg
-  proj233_msgs
-)
-
-install(TARGETS ab_can_replay_233
-  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -1,0 +1,34 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/MiscForDebugAndRefill/EgoStatus/HMIGroup.msg
+// generated code does not contain a copyright notice
+
+
+module proj233_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      " ACC 功能主开关; 取值: true-开；false-关；")
+    struct HMIGroup {
+      boolean b_acc_mainswitch;
+
+      @verbatim (language="comment", text=
+        " ACC 定速巡航设定速度减信号; 取值: true-开；false-关；")
+      boolean b_acc_speedminus;
+
+      @verbatim (language="comment", text=
+        " ACC 定速巡航设定速度加信号; 取值: true-开；false-关；")
+      boolean b_acc_speedup;
+
+      @verbatim (language="comment", text=
+        " ACC 恢复开关信号; 取值: true-开；false-关；")
+      boolean b_acc_resume;
+
+      @verbatim (language="comment", text=
+        " ACC 设置开关信号; 取值: true-开；false-关；")
+      boolean b_acc_set;
+
+      @verbatim (language="comment", text=
+        " 远光灯拨杆状态；取值: true-开；false-关；")
+      boolean b_highbeam_leverstatus;
+    };
+  };
+};

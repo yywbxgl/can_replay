@@ -1,0 +1,20 @@
+uint8 acc_limit_main_status
+
+uint8 acc_v_set_status
+
+uint8 acc_v_resume_status
+uint8 acc_v_plus_status
+uint8 acc_cancel_status
+uint8 acc_v_minus_status
+uint8 acc_time_gap_plus_status
+uint8 acc_time_gap_minus_status
+
+uint8 highway_pilot_switch_status
+
+uint8 highway_noa_switch_status
+
+uint8 city_noa_switch_status
+
+uint8 parking_switch_status
+uint8 alc_need_confirm
+uint8 alc_dtlc_style

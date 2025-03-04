@@ -1,0 +1,38 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/MiscForDebugAndRefill/EgoStatus/EgoStatus.msg
+// generated code does not contain a copyright notice
+
+#include "BodyGroup.idl"
+#include "ChassisGroup.idl"
+#include "HMIGroup.idl"
+#include "PrivHeader.idl"
+#include "ParamaterSettingGroup.idl"
+#include "SwitchSettingGroup.idl"
+
+module proj233_msgs {
+  module msg {
+    struct EgoStatus {
+      proj233_msgs::msg::PrivHeader header;
+
+      @verbatim (language="comment", text=
+        "底盘相关信息")
+      proj233_msgs::msg::ChassisGroup chassis_group_data;
+
+      @verbatim (language="comment", text=
+        "车身相关信息")
+      proj233_msgs::msg::BodyGroup body_group_data;
+
+      @verbatim (language="comment", text=
+        "HMI相关信息")
+      proj233_msgs::msg::HMIGroup hmi_group_data;
+
+      @verbatim (language="comment", text=
+        "SwitchSettingGroup相关信息")
+      proj233_msgs::msg::SwitchSettingGroup SwitchSettingGroup_data;
+
+      @verbatim (language="comment", text=
+        "ParamaterSettingGroup相关信息")
+      proj233_msgs::msg::ParamaterSettingGroup ParamaterSettingGroup_data;
+    };
+  };
+};

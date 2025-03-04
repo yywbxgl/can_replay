@@ -1,0 +1,11 @@
+
+
+module proj233_msgs {
+    module msg {
+        struct CanFrame {
+            uint32 id;
+            uint8  len;
+            uint8  data[8];
+        };
+    };
+};

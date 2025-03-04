@@ -1,0 +1,38 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/MiscForDebugAndRefill/EgoStatus/HMIGroup.msg
+// generated code does not contain a copyright notice
+
+
+module proj233_msgs {
+  module msg {
+    struct SwitchSettingGroup {
+  /* LIM主开关, true：On false：Off */
+  uint8 ACC_limit_main_status;
+
+  /* Set状态 false：Not Pressed true：Pressed */
+  uint8 ACC_v_set_status;
+
+  /* Resume状态 false：Not Pressed true：Pressed */
+  uint8 ACC_v_resume_status;
+  uint8 ACC_v_plus_status;
+  uint8 ACC_cancel_status;
+  uint8 ACC_v_minus_status;
+  uint8 ACC_time_gap_plus_status;
+  uint8 ACC_time_gap_minus_status;
+
+  /* highway pilot开关状态 true：On false：Off */
+  uint8 Highway_pilot_switch_status;
+
+  /* highway noa开关状态 true：On false：Off */
+  uint8 Highway_noa_switch_status;
+
+  /* city noa开关状态 true：On false：Off */
+  uint8 City_noa_switch_status;
+
+  /* parking开关状态 true：On false：Off */
+  uint8 Parking_switch_status;
+  uint8 ALC_need_confirm;
+  uint8 ALC_dtlc_style;
+    };
+  };
+};

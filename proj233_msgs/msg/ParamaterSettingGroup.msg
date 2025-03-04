@@ -1,0 +1,24 @@
+
+uint8 fcw_aeb_switch_status
+uint8 fcw_aeb_alarm_sensitivity_set
+
+
+uint8 ldw_switch_status
+uint8 ldw_alarm_method_set
+uint8 ldw_alarm_sensitivity_set
+
+uint8 elk_switch_status
+
+
+uint8 elk_alarm_method_set
+uint8 slif_switch
+uint8 slif_reminder_method_set
+uint8 slwf_switch
+uint8 slwf_alarm_method_set
+uint8 mois_switch
+
+
+uint8 bsis_alarm_method_set
+uint8 dow_switch
+uint8 bsd_lcw_switch
+uint8 auto_lmp_switch_status
