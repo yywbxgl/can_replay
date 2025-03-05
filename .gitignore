@@ -3,3 +3,5 @@ build/
 test/
 log/
 release/
+install/
+log/
