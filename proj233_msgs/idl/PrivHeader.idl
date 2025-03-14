@@ -1,0 +1,13 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/Common/PrivHeader.msg
+// generated code does not contain a copyright notice
+
+#include "PrivTime.idl"
+
+module proj233_msgs {
+  module msg {
+    struct PrivHeader {
+      proj233_msgs::msg::PrivTime stamp;
+    };
+  };
+};

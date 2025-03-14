@@ -1,0 +1,34 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/MiscForDebugAndRefill/EgoStatus/BodyGroup.msg
+// generated code does not contain a copyright notice
+
+
+module proj233_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "道路坡度; 单位：rad; 取值：底盘控制器实际反馈值；约定特殊值10000.f表示状态异常或状态未知；")
+    struct BodyGroup {
+      float inclination;
+
+      @verbatim (language="comment", text=
+        "转向拨杆状态; 取值：0-关; 1-左转; 2-右转; 3-未知；")
+      int8 turn_light_lever_status;
+
+      @verbatim (language="comment", text=
+        "转向灯状态; 取值：0-左&右关; 1-左转闪; 2-右转闪; 3-左&右闪；4-未知；")
+      int8 turn_light_status;
+
+      @verbatim (language="comment", text=
+        "远光灯状态; 取值：0-关; 1-开; 2-未知；")
+      int8 high_beam_status;
+
+      @verbatim (language="comment", text=
+        "前雾灯状态; 取值：0-前&后关; 1-前开; 2-后开；3-前&后开；4-未知；")
+      int8 fog_light_status;
+
+      @verbatim (language="comment", text=
+        "近光灯状态; 取值：0-关; 1-开; 2-未知；")
+      int8 low_beam_status;
+    };
+  };
+};

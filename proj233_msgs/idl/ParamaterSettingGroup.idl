@@ -1,0 +1,50 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/MiscForDebugAndRefill/EgoStatus/HMIGroup.msg
+// generated code does not contain a copyright notice
+
+
+module proj233_msgs {
+  module msg {
+    struct ParamaterSettingGroup {
+  uint8 FCW_AEB_switch_status;
+  uint8 FCW_AEBAlarmSensitivitySet;
+
+  /* eum
+     0x0:Voice
+     0x1:Haptic
+     0x2:Voice+Haptic
+     0x3:Reserved */
+  uint8 ldw_switch_status;
+  uint8 LDWAlarmMethodSet;
+  uint8 LDWAlarmSensitivitySet;
+
+  /* eum
+     0x0:Normal
+     0x1:High sensitivity
+     0x2:Low sensitivity
+     0x3:Reserved */
+  uint8 elk_switch_status;
+
+  /* eum
+     0x0:Normal
+     0x1:High sensitivity
+     0x2:Low sensitivity
+     0x3:Reserved */
+  uint8 ELKAlarmMethodSet;
+  uint8 SLIFSwitch;
+  uint8 SLIFReminderMethodSet;
+  uint8 SLWF_Switch;
+  uint8 SLWF_AlarmMethodSet;
+  uint8 MOISSwitch;
+
+  /* enum
+     0x1: Visual and acoustic
+     0x2: Visual and haptic
+     0x3: Haptic */
+  uint8 BSISAlarmMethodSet;
+  uint8 DOWSwitch;
+  uint8 BSD_LCWSwitch;
+  uint8 autoLmp_switch_status;
+    };
+  };
+};

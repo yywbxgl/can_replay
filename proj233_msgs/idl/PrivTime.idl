@@ -1,0 +1,14 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from proj233_msgs/msgs/Common/PrivTime.msg
+// generated code does not contain a copyright notice
+
+
+module proj233_msgs {
+  module msg {
+    struct PrivTime {
+      int32 sec;
+
+      uint32 nanosec;
+    };
+  };
+};
